@@ -60,4 +60,20 @@ public class EmployeeController {
     public Employee addEmployee(Employee employee) {
         return employeeRepository.save(employee);
     }
+
+    //更新某个employee
+    @PutMapping(value = "/{id}")
+    public Employee updateEmployee(@PathVariable(value = "id") Long id,
+                                   @RequestParam(value = "name") String name,
+                                   @RequestParam(value = "age") Integer age,
+                                   @RequestParam(value = "gender") String gender,
+                                   @RequestParam(value = "salary") Integer salary) {
+        Employee employee = employeeRepository.findOne(id);
+        employee.setName(name);
+        employee.setAge(age);
+        employee.setGender(gender);
+        employee.setSalary(salary);
+        return employeeRepository.save(employee);
+    }
+
 }
