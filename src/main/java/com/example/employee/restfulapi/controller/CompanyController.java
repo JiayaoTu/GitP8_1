@@ -49,5 +49,17 @@ public class CompanyController {
         return companyRepository.save(company);
     }
 
+    //更新某个company
+    @PutMapping(value = "/{id}")
+    public Company uodateCompany(@PathVariable(value = "id") Long id,
+                              @RequestParam(value = "companyName") String companyName,
+                              @RequestParam(value = "employeesNumber") Integer employeesNumber){
+
+        Company company = companyRepository.getOne(id);
+        company.setCompanyName(companyName);
+        company.setEmployeesNumber(employeesNumber);
+        return companyRepository.save(company);
+    }
+
 
 }
