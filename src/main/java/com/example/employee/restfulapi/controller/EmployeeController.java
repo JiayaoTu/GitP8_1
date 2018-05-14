@@ -1,17 +1,17 @@
 package com.example.employee.restfulapi.controller;
 
-import com.example.employee.restfulapi.entity.Company;
 import com.example.employee.restfulapi.entity.Employee;
 import com.example.employee.restfulapi.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping(value="/employees")
@@ -39,5 +39,19 @@ public class EmployeeController {
     public Page<Employee> getEmployeePage(@PathVariable(value = "pageNo") int pageNo, @PathVariable(value = "pageSize") int pageSize) {
         Pageable pageable = new PageRequest(pageNo, pageSize);
         return employeeRepository.findAll(pageable);
+    }
+
+    //筛选出所有男性Employee
+    @GetMapping(value = "/male")
+    public List<Employee> getMaleEmployeeList() {
+        return employeeRepository.findAll((Specification<Employee>) (root, query, cb) -> {
+            List<Predicate> list = new ArrayList<>();
+
+            list.add(cb.equal(root.get("gender").as(String.class), "male"));
+
+            Predicate[] p = new Predicate[list.size()];
+            query.where(cb.and(list.toArray(p)));
+            return query.getRestriction();
+        });
     }
 }
