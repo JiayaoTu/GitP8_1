@@ -61,5 +61,11 @@ public class CompanyController {
         return companyRepository.save(company);
     }
 
+    //删除某个company以及名下所有employees
+    @DeleteMapping(value = "/{id}")
+    public void deleteCompany(@PathVariable(value = "id") Long id) {
+        companyRepository.delete(id);
+    }
+
 
 }
