@@ -76,4 +76,10 @@ public class EmployeeController {
         return employeeRepository.save(employee);
     }
 
+    //删除某个employee
+    @DeleteMapping(value = "/{id}")
+    public void deleteEmployee(@PathVariable(value = "id") Long id) {
+        employeeRepository.delete(id);
+    }
+
 }
