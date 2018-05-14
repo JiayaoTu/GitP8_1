@@ -54,4 +54,10 @@ public class EmployeeController {
             return query.getRestriction();
         });
     }
+
+    //增加一个employee
+    @PostMapping
+    public Employee addEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 }
